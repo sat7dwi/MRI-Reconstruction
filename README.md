@@ -1,8 +1,6 @@
 # MRI-Reconstruction
 EE698K Course Project
 
-Dataset Website: http://mridata.org/
+Dataset and Exercise Website: https://people.eecs.berkeley.edu/~mlustig/CS.html
 
-Step1: Run readReconData.m and writeReconData.m
-
-Step2: Try taking IFFT of KSpace Images
+SparseMRI website: https://people.eecs.berkeley.edu/~mlustig/Software.html
