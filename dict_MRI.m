@@ -23,19 +23,25 @@ x0 = imu;
 y0 = Mu;
 x = x0;
 nu = 100;
+patchwidth = 6;
 
 %iteration
 for l=1:1:15
    %Create patches of size 6x6, (i,j)th patch will be Patch{(i-1)*Width + (j-1) + 1}
-   P, width = create_patches(x);
+   x_real = abs(x);
+   x_real = x_real / max(max(abs(x_real))) ; % normalize the image
+   [P, width] = create_patches(x_real, patchwidth);
    % Learn Dictionary and Sparse representations of patches for x
-   D, alphamat = Learn_D_and_alphas(x,P);
+   [D, alphamat] = Learn_D_and_alphas(x_real,P);
    % Reconstruct patches using their alpha values
    P_rec = reconstructed_patches(D,P);
    % Create a new x (image) by adding all reconstructed patches 
    x_new = add_rec_patches(P_rec, width);
+   x_new = x_new / max(max(abs(x_new))) ; % normalize the image
    % Take FFT and restore sample frequencies as given in question
-   y = fft2c(x_new);
+   x_zeros = zeros(size(x,1),size(x,2));
+   x_new_cplx = complex(x_new);
+   y = fft2c(x_new_cplx);
    y_new = restore_frequencies(nu,y0,y);
    % final reconstructed image
    x = ifft2c(y_new);
