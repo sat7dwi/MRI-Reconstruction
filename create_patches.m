@@ -1,7 +1,7 @@
 % input: x(real image), patchwidth(width of square patch)
-% output: P(all the patches), width(width of image)
+% output: P(all the patches), width(width of image), height(height of image)
 
-function [P, width] = create_patches(x_0, patchwidth)
+function [P, width, height] = create_patches(x_0, patchwidth)
 
     width = size(x_0,2);
     height = size(x_0,1);
