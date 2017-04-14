@@ -2,12 +2,12 @@
 
 load brain;
 im_abs = abs(im);
-W=Wavelet;
+% W=Wavelet;
 
 %%%%%%%%% Random UnderSampling: %%%%%%%%%%%
 
 M = fft2c(im); %random uniform
-Mu = (M.*mask_unif)./pdf_vardens;
+Mu = (M.*mask_unif)./pdf_unif;
 imu = abs(ifft2c(Mu));
 
 M = fft2c(im); %random vardens
@@ -19,8 +19,8 @@ imv = abs(ifft2c(Mv));
 % i/p : y (undersampled K-Space data) o/p: x (reconstructed image)
 
 %initialisation
-x0 = imu;
-y0 = Mu;
+x0 = imv;
+y0 = Mv;
 x = x0;
 nu = 100;
 patchwidth = 6;
@@ -30,9 +30,9 @@ for l=1:1:15
    %Create patches of size 6x6, (i,j)th patch will be Patch{(i-1)*Width + (j-1) + 1}
    x_real = abs(x);
    x_real = x_real / max(max(abs(x_real))) ; % normalize the image
-   [P, width, height] = create_patches(x_real, patchwidth);
+   [X_real, width, height] = create_patches(x_real, patchwidth);
    % Learn Dictionary and Sparse representations of patches for x
-   [D, alphas] = Learn_D_and_alphas(x_real,P);
+   [D, alphas] = Learn_D_and_alphas(X_real);
    % Reconstruct patches using their alpha values
    P_rec = reconstructed_patches(D,alphas);
    % Create a new x (image) by adding all reconstructed patches 
