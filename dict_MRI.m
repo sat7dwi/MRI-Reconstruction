@@ -23,8 +23,8 @@ x0 = imv;
 y0 = Mv;
 x = x0;
 nu = 100;
-patchwidth = 9;
-stride = 3;
+patchwidth = 8;
+stride = 2;
 ssims = [];
 rmss = [];
 %iteration
