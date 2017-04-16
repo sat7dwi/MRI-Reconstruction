@@ -22,5 +22,5 @@ function [D, alphas] = Learn_D_and_alphas(Img)
     param.InitializationMethod =  'GivenMatrix';
     param.displayProgress = 1;
     %[D,~]  = KSVD(X,param);
-    alphas = OMP(D,X, param.L);
+    alphas = OMP(D,Img, param.L);
 end
