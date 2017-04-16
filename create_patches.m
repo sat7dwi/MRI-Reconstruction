@@ -13,11 +13,11 @@ function [P, width, height] = create_patches(x_0, patchwidth)
     for j=width+1:1:width+patchwidth
         x(:,j) = x(:,mod(j,width));    
     end
-    P = {};
+    P = [];
     for i=1:1:height
         for j=1:1:width
             patch = x(i:i+patchwidth-1,j:j+patchwidth-1);
-            P{(i-1)*width + (j-1) + 1} = patch;
+            P(:,(i-1)*width + (j-1) + 1) = reshape(patch,[patchwidth^2,1]);
         end
     end
     

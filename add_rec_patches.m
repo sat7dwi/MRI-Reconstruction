@@ -7,7 +7,8 @@ function x = add_rec_patches(P_rec, width, height, patchwidth)
     x = zeros(height, width);
     for i=1:1:height
         for j=1:1:width
-           x_exp(i:i+patchwidth-1,j:j+patchwidth-1) = x_exp(i:i+patchwidth-1,j:j+patchwidth-1) + P_rec{(i-1)*width + (j-1) + 1}; 
+            patch = reshape(P_rec(:,(i-1)*width + (j-1) + 1),[patchwidth,patchwidth]);
+           x_exp(i:i+patchwidth-1,j:j+patchwidth-1) = x_exp(i:i+patchwidth-1,j:j+patchwidth-1) + patch; 
         end
     end
     for i=height+1:1:height+patchwidth

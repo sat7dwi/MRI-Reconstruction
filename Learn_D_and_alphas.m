@@ -9,19 +9,18 @@ function [D, alphas] = Learn_D_and_alphas(Img)
     indices = randperm(N, delta);
     D = img(:, indices);
     K = 5;
-    
-    it = 0;
-    while it < 10
-        alphas = omp(D, X, K);
-        E = X - D*alphas;
-        disp(norm(E(:)));
-        for i = 1 : delta
-           E = X(:,(alphas(i,:)~=0)&((1:N)~=i)) - D(:,1:end~=i) * alphas(1:end~=i, (alphas(i,:)~=0)&((1:N)~=i));
-           [U,S,V] = svd(E);
-           D(:,i) = U(:,1);
-           alphas(i, (alphas(i,:)~=0)&((1:N)~=i)) = S(1,1) * V(:,1)';
-        end
-        it = it + 1;
-    end    
-    alphas = omp(D, X, K);
+
+    param.L = K;   % number of elements in each linear combination.
+    param.K = delta; % number of dictionary elements
+    param.numIteration = 50; % number of iteration to execute the K-SVD algorithm.
+    param.initialDictionary = D; %Initialise the Dictionary
+    param.errorFlag = 0; % decompose signals until a certain error is reached. do not use fix number of coefficients.
+    %param.errorGoal = sigma;
+    param.preserveDCAtom = 0;
+
+    %%%%%%%% initial dictionary: Dictionary elements %%%%%%%%
+    param.InitializationMethod =  'GivenMatrix';
+    param.displayProgress = 1;
+    %[D,~]  = KSVD(X,param);
+    alphas = OMP(D,X, param.L);
 end
