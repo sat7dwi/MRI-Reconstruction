@@ -1,6 +1,6 @@
 function [D, alphas] = Learn_D_and_alphas(Img)
-    
-    img = Img(:, sum(Img,1)~=0);
+    ind_nz = sum(Img,1)~=0;
+    img = Img(:, ind_nz);
     N = 5000;
     indices = randperm(size(img,2), N);
     X = img(:, indices);
@@ -22,5 +22,7 @@ function [D, alphas] = Learn_D_and_alphas(Img)
     param.InitializationMethod =  'GivenMatrix';
     param.displayProgress = 1;
     %[D,~]  = KSVD(X,param);
-    alphas = OMP(D,Img, param.L);
+    alphas_nz = full(OMP(D,img, param.L));
+    alphas = zeros(36, size(Img));
+    alphas(:, ind_nz) = alphas_nz;
 end
