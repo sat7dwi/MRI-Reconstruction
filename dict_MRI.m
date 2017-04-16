@@ -23,8 +23,10 @@ x0 = imv;
 y0 = Mv;
 x = x0;
 nu = 100;
-patchwidth = 6;
+patchwidth = 9;
 stride = 3;
+ssims = [];
+rmss = [];
 %iteration
 for l=1:1:15
    %Create patches of size 6x6, (i,j)th patch will be Patch{(i-1)*Width + (j-1) + 1}
@@ -45,12 +47,12 @@ for l=1:1:15
    % final reconstructed image
    x = ifft2c(y_new);
    im_fin = abs(x) / max(max(abs(x)));
-   ssim_u = ssim(im_fin, im_abs);
-   rmse = sum(sum((im_fin-im_abs).^2))/512/512;
-   %diff_v = sum(sum(abs(im_hat-im)))/10000;
-   disp(strcat('ITR', num2str(l), '; ssim: ',num2str(ssim_u),' , rmse: ',num2str(rmse)));
-
-   
+   ssims = [ssims, ssim(im_fin, im_abs)];
+   rmss = [rmss, sum(sum((im_fin-im_abs).^2))/512/512];
+   disp('ssim vals:');
+   disp(ssims);
+   disp('rmse vals:');
+   disp(rmss);
 end
 
 

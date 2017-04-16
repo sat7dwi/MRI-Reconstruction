@@ -12,7 +12,7 @@ function [D, alphas] = Learn_D_and_alphas(Img, patchwidth, stride)
 
     param.L = 2;%K;   % number of elements in each linear combination.
     param.K = delta; % number of dictionary elements
-    param.numIteration = 50; % number of iteration to execute the K-SVD algorithm.
+    param.numIteration = 20; % number of iteration to execute the K-SVD algorithm.
     param.initialDictionary = D; %Initialise the Dictionary
     param.errorFlag = 0; % decompose signals until a certain error is reached. do not use fix number of coefficients.
     %param.errorGoal = sigma;
