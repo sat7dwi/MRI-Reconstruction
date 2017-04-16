@@ -1,16 +1,16 @@
-function [D, alphas] = Learn_D_and_alphas(Img)
+function [D, alphas] = Learn_D_and_alphas(Img, patchwidth, stride)
     ind_nz = sum(Img,1)~=0;
     img = Img(:, ind_nz);
-    N = 5000;
+    N = 4000;
     indices = randperm(size(img,2), N);
     X = img(:, indices);
     
-    delta = 36;
+    delta = patchwidth*patchwidth*2;
     indices = randperm(N, delta);
     D = img(:, indices);
-    K = 5;
+    K = floor(0.03*delta);
 
-    param.L = K;   % number of elements in each linear combination.
+    param.L = 2;%K;   % number of elements in each linear combination.
     param.K = delta; % number of dictionary elements
     param.numIteration = 50; % number of iteration to execute the K-SVD algorithm.
     param.initialDictionary = D; %Initialise the Dictionary
@@ -21,8 +21,8 @@ function [D, alphas] = Learn_D_and_alphas(Img)
     %%%%%%%% initial dictionary: Dictionary elements %%%%%%%%
     param.InitializationMethod =  'GivenMatrix';
     param.displayProgress = 1;
-    %[D,~]  = KSVD(X,param);
+    [D,~]  = KSVD(X,param);
     alphas_nz = full(OMP(D,img, param.L));
-    alphas = zeros(36, size(Img));
+    alphas = zeros(delta, size(Img, 2));
     alphas(:, ind_nz) = alphas_nz;
 end

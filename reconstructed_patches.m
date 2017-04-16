@@ -1,4 +1,3 @@
 function P_rec = reconstructed_patches(D,alphas)
-alphaf = full(alphas);
-P_rec = D*alphaf;
+P_rec = D*alphas;
 end
