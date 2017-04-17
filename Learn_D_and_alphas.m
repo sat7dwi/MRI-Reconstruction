@@ -1,19 +1,23 @@
-function [D, alphas] = Learn_D_and_alphas(Img, patchwidth, stride)
+function [D, alphas] = Learn_D_and_alphas(Img, patchwidth)
     ind_nz = sum(Img,1)>0.001*patchwidth*patchwidth; %<10
     img = Img(:, ind_nz);
+    disp('nz factor:');
+    disp(num2str(size(img,2)/size(Img,2)));
     N = 4000;
     indices = randperm(size(img,2), N);
     X = img(:, indices);
     
-    delta = patchwidth*patchwidth*2;
-    indices = randperm(N, delta);
-    D = normc(img(:, indices)); %Normalize the Dictionary!
+    delta = patchwidth*patchwidth;
+    indices = randperm(size(img,2), N);
+    [~, D] = kmeans(img(:, indices)', delta);
+%     D = img(:, randperm(size(img,2), delta));
+    D = normc(D'); %Normalize the Dictionary!
     
-    K = floor(0.03*delta);
+    %K = floor(0.03*delta);
 
     param.L = 2;%K;   % number of elements in each linear combination.
     param.K = delta; % number of dictionary elements
-    param.numIteration = 50; % number of iteration to execute the K-SVD algorithm.
+    param.numIteration = 20; % number of iteration to execute the K-SVD algorithm.
     param.initialDictionary = D; %Initialise the Dictionary
     param.errorFlag = 0; % decompose signals until a certain error is reached. do not use fix number of coefficients.
     %param.errorGoal = sigma;
